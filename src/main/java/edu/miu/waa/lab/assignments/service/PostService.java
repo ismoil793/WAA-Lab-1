@@ -1,6 +1,6 @@
 package edu.miu.waa.lab.assignments.service;
 
-import edu.miu.waa.lab.assignments.domain.Post;
+import edu.miu.waa.lab.assignments.entity.Post;
 
 import java.util.List;
 
