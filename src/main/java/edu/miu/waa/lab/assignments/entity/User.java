@@ -4,6 +4,8 @@ package edu.miu.waa.lab.assignments.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -15,5 +17,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-//    private List<Post> posts;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_post")
+
+    private List<Post> posts;
 }
