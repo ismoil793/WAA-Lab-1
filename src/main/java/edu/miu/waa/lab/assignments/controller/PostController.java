@@ -29,4 +29,9 @@ public class PostController {
     void save(@RequestBody Post post) {
         postService.save(post);
     }
+
+    @GetMapping("/filter")
+    List<Post> findByTitle(@RequestParam("title") String title) {
+        return postService.findByTitle(title);
+    }
 }

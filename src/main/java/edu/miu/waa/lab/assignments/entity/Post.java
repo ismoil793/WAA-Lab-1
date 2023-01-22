@@ -2,6 +2,9 @@ package edu.miu.waa.lab.assignments.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.modelmapper.internal.bytebuddy.asm.Advice;
+
+import java.util.List;
 
 @Entity
 @Table(name="posts")
@@ -14,5 +17,10 @@ public class Post {
 
     private String title;
     private String content;
+
     private String author;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "postId")
+    private List<Comment> comments;
 }

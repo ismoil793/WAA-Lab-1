@@ -35,4 +35,9 @@ public class PostServiceImpl implements PostService {
     public void save(Post post) {
         postRepo.save(post);
     }
+
+    @Override
+    public List<Post> findByTitle(String title) {
+        return postRepo.findByTitle(title);
+    }
 }

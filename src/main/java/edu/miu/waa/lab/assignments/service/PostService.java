@@ -10,4 +10,6 @@ public interface PostService {
     Post findById(long id);
 
     void save(Post post);
+
+    List<Post> findByTitle(String title);
 }

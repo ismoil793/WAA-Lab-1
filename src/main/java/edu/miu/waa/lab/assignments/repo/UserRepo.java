@@ -15,4 +15,7 @@ public interface UserRepo extends CrudRepository<User, Long> {
     @Query( "select u.posts from User u where u.id = :id" )
     List<Post> findPosts(long id);
     User findById(long id);
+
+    @Query("select u from User u where size(u.posts) > :number")
+    List<User> findUsersHavingPostsGreaterThan(int number);
 }

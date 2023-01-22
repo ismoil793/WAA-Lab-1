@@ -37,4 +37,14 @@ public class UserServiceImpl implements UserService {
     public List<Post> findPosts(long id) {
         return userRepo.findPosts(id);
     }
+
+    @Override
+    public void delete(long id) {
+        userRepo.deleteById(id);
+    }
+
+    @Override
+    public List<User> findUsersHavingPostsGreaterThan(int id) {
+        return userRepo.findUsersHavingPostsGreaterThan(id);
+    }
 }

@@ -19,7 +19,6 @@ public class User {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_post")
-
+    @JoinColumn(name = "userId")
     private List<Post> posts;
 }

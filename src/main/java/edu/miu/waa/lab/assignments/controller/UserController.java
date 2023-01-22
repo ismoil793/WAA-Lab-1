@@ -29,8 +29,19 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @DeleteMapping("/{id}")
+    void delete(@PathVariable("id") long id) {
+        userService.delete(id);
+    }
+
     @GetMapping("/{id}/posts")
     List<Post> findPosts(@PathVariable("id") long userId) {
         return userService.findPosts(userId);
     }
+
+    @GetMapping("/filter")
+    List<User> filterByPostNumber(@RequestParam("posts") int posts) {
+        return userService.findUsersHavingPostsGreaterThan(posts);
+    }
+
 }

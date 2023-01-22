@@ -13,4 +13,8 @@ public interface UserService {
     void save(User user);
 
     List<Post> findPosts(long id);
+
+    void delete(long id);
+
+    List<User> findUsersHavingPostsGreaterThan(int id);
 }
