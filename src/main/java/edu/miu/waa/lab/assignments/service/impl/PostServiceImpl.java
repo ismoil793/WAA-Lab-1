@@ -1,6 +1,5 @@
 package edu.miu.waa.lab.assignments.service.impl;
 
-import edu.miu.waa.lab.assignments.dto.PostDto;
 import edu.miu.waa.lab.assignments.entity.Post;
 import edu.miu.waa.lab.assignments.repo.PostRepo;
 import edu.miu.waa.lab.assignments.service.PostService;

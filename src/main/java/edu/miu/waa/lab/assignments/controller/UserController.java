@@ -1,5 +1,6 @@
 package edu.miu.waa.lab.assignments.controller;
 
+import edu.miu.waa.lab.assignments.aspect.annotation.ExecutionTime;
 import edu.miu.waa.lab.assignments.entity.Post;
 import edu.miu.waa.lab.assignments.entity.User;
 import edu.miu.waa.lab.assignments.service.UserService;
@@ -24,6 +25,7 @@ public class UserController {
         userService.save(user);
     }
 
+    @ExecutionTime
     @GetMapping("/{id}")
     User findById(@PathVariable("id") long id) {
         return userService.findById(id);
