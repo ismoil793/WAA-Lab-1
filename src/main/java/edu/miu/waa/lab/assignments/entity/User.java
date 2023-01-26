@@ -1,6 +1,5 @@
 package edu.miu.waa.lab.assignments.entity;
 
-//import javax.persistence.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,7 +17,13 @@ public class User {
     private long id;
     private String name;
 
+    private String email;
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private List<Post> posts;
+
+    @ManyToMany
+    private List<Role> roles;
 }
