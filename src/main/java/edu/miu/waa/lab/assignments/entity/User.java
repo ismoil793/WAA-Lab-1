@@ -15,15 +15,16 @@ public class User {
     // automatic increment works here
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
 
     private String email;
     private String password;
+    private String firstname;
+    private String lastname;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
     private List<Post> posts;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable
     private List<Role> roles;
 }

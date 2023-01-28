@@ -14,11 +14,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
+
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
@@ -26,25 +29,39 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        Authentication result = null;
         try {
-            String email = loginRequest.getEmail();
-            String password = loginRequest.getPassword();
-            var result = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-            final String accessToken = jwtUtil.generateToken(userDetails);
-            final String refreshToken = jwtUtil.generateRefreshToken(email);
-
-            return new LoginResponse(accessToken, refreshToken);
+            result = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
         } catch (BadCredentialsException e) {
-            System.out.println("Bad credentials");
-            return null;
+            System.out.println(e.getMessage());
+            throw new BadCredentialsException(e.getMessage());
         }
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(result.getName());
+
+        final String accessToken = jwtUtil.generateToken(userDetails);
+        final String refreshToken = jwtUtil.generateRefreshToken(loginRequest.getEmail());
+        return new LoginResponse(accessToken, refreshToken);
     }
 
     @Override
     public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        return null;
+        boolean isRefreshTokenValid = jwtUtil.validateToken(refreshTokenRequest.getRefreshToken());
+        if (isRefreshTokenValid) {
+            // TODO (check the expiration of the accessToken when request sent, if the is recent according to
+            //  issue Date, then accept the renewal)
+            var isAccessTokenExpired = jwtUtil.isTokenExpired(refreshTokenRequest.getAccessToken());
+            if(isAccessTokenExpired)
+                System.out.println("ACCESS TOKEN IS EXPIRED"); // TODO Renew is this case
+            else
+                System.out.println("ACCESS TOKEN IS NOT EXPIRED");
+            final String accessToken = jwtUtil.doGenerateToken(  jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));
+            var loginResponse = new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
+            // TODO (OPTIONAL) When to renew the refresh token?
+            return loginResponse;
+        }
+        return new LoginResponse(null, null);
     }
 }
